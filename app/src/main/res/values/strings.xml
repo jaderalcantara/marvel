@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Pedido Fácil</string>
+    <string name="anadir">AÑADIR</string>
+    <plurals name="unit">
+        <item quantity="one" >1x%d Unidad</item>
+        <item quantity="other" >1x%d Unidades</item>
+    </plurals>
+</resources>
