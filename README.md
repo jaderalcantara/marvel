@@ -1,1 +1,5 @@
-# ambev_exam
+Practicing
+Kotlin
+Coroutines
+Koin
+MVVM
