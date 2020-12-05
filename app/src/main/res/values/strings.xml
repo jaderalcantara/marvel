@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">Pedido Fácil</string>
-    <string name="anadir">AÑADIR</string>
-    <plurals name="unit">
-        <item quantity="one" >1x%d Unidad</item>
-        <item quantity="other" >1x%d Unidades</item>
-    </plurals>
+    <string name="app_name">Marvel</string>
+    <string name="empty_list_message">No content to show, pull to refresh.</string>
+    <string name="all">All</string>
+    <string name="favorites">Favorites</string>
+    <string name="search">Search</string>
+    <string name="comics">Comics</string>
 </resources>
