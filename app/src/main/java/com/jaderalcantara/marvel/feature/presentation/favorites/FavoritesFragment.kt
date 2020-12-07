@@ -114,8 +114,7 @@ class FavoritesFragment : Fragment() {
                 swipeRefresh.isRefreshing = false
 
                 if (resource.data?.results?.isEmpty() == true) {
-                    swipeRefresh.visibility = GONE
-                    emptySwipeRefresh.visibility = VISIBLE
+                    showEmpty()
                 } else {
                     emptySwipeRefresh.visibility = GONE
                     swipeRefresh.visibility = VISIBLE
@@ -125,7 +124,12 @@ class FavoritesFragment : Fragment() {
                             adapter =
                                 FavoritesRecyclerViewAdapter(
                                     viewModel,
-                                    resource.data?.results as ArrayList<CharacterResponse>
+                                    resource.data?.results as ArrayList<CharacterResponse>,
+                                    object : FavoritesRecyclerViewAdapter.OnListListener {
+                                        override fun onListIsEmpty() {
+                                            showEmpty()
+                                        }
+                                    }
                                 )
                         }
                     }
@@ -137,6 +141,11 @@ class FavoritesFragment : Fragment() {
                 Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
             }
         }
+    }
+
+    private fun showEmpty() {
+        swipeRefresh.visibility = GONE
+        emptySwipeRefresh.visibility = VISIBLE
     }
 
 }
