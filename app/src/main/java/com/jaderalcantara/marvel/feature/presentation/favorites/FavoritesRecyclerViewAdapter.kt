@@ -18,8 +18,7 @@ import java.util.ArrayList
 
 class FavoritesRecyclerViewAdapter(
     private val vm: FavoritesViewModel,
-    private val values: ArrayList<CharacterResponse>,
-    private val listener: OnListListener
+    private var values: ArrayList<CharacterResponse>
 ) : RecyclerView.Adapter<FavoritesRecyclerViewAdapter.ViewHolder>(), KoinComponent {
     private val imageHelper: ImageHelper by inject()
 
@@ -43,26 +42,23 @@ class FavoritesRecyclerViewAdapter(
 
         holder.fav.setOnClickListener {
             item.id?.let {
+                notifyItemRemoved(values.indexOf(item))
+                values.remove(item)
                 vm.removeFavorite(item)
-            }
-            notifyItemRemoved(values.indexOf(item))
-            values.remove(item)
-
-            if(values.isEmpty()){
-                listener.onListIsEmpty()
             }
         }
     }
 
     override fun getItemCount(): Int = values.size
 
+    fun setItems(items: List<CharacterResponse>) {
+        values = items as ArrayList<CharacterResponse>
+        notifyDataSetChanged()
+    }
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val image: ImageView = view.findViewById(R.id.image)
         val name: TextView = view.findViewById(R.id.name)
         val fav: ImageView = view.findViewById(R.id.fav)
-    }
-
-    interface OnListListener{
-        fun onListIsEmpty()
     }
 }

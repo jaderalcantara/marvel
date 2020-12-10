@@ -1,7 +1,9 @@
 package com.jaderalcantara.marvel.feature.data
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CharacterResponse (
     val id: Int,
     val name: String,
@@ -9,7 +11,7 @@ data class CharacterResponse (
     var isFavorite: Boolean = false,
     val description: String? = null,
     val comics: DataComicsResponse? = null
-): Serializable {
+): Parcelable {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

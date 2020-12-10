@@ -1,9 +1,11 @@
 package com.jaderalcantara.marvel.feature.data
 
-import java.io.Serializable
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class CharacterThumbnailResponse (
     val path: String,
     val extension: String,
     val base64: String?
-): Serializable
+): Parcelable

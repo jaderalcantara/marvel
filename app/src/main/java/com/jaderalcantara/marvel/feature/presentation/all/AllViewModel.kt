@@ -1,55 +1,67 @@
 package com.jaderalcantara.marvel.feature.presentation.all
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
+import androidx.lifecycle.*
 import com.jaderalcantara.marvel.feature.data.CharacterRepository
 import com.jaderalcantara.marvel.feature.data.CharacterResponse
-import com.jaderalcantara.marvel.feature.data.DataCharacterResponse
 import com.jaderalcantara.marvel.infra.ImageHelper
-import com.jaderalcantara.marvel.infra.MarvelApplication
+import com.jaderalcantara.marvel.infra.LiveEvent
 import com.jaderalcantara.marvel.infra.request.StateData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 import java.util.function.Consumer
 
-class AllViewModel : ViewModel(), KoinComponent {
-
-    private val repository: CharacterRepository by inject()
-    private val defaultDispatcher: CoroutineDispatcher by inject()
-    private val imageHelper: ImageHelper by inject()
+class AllViewModel(
+        private val repository: CharacterRepository,
+        private val defaultDispatcher: CoroutineDispatcher,
+        private val imageHelper: ImageHelper
+) : ViewModel() {
 
     private var query : String? = null
-    val limit = 20
-    var offset = 0;
+    private val limit = 20
+    private var offset = 0
+    private val characters = ArrayList<CharacterResponse>()
 
-    fun loadCharacters(): LiveData<StateData<DataCharacterResponse>> = liveData(defaultDispatcher) {
-        emit(StateData.loading(null))
-        try {
-            val loadCharacters = query?.let { repository.loadCharacters(it, offset, limit) } ?: repository.loadCharacters(offset, limit)
-            loadCharacters.data.results.forEach(Consumer {
-                it.isFavorite = repository.isFavorite(it.id)
-            })
-            emit(StateData.success(loadCharacters.data))
-            offset += limit
-        } catch (ioException: Exception) {
-            ioException.message?.let {
-                emit(StateData.error(null, it))
-            } ?: run{
-                emit(StateData.error(null, ioException.toString()))
+    var disableEndlessLiveData = MutableLiveData<Boolean>()
+    val itemSelectedLiveData = LiveEvent<CharacterResponse>()
+    val charactersLiveData = MutableLiveData<StateData<List<CharacterResponse>>>()
+
+    fun loadCharacters() {
+        viewModelScope.launch(defaultDispatcher) {
+            if(offset == 0) {
+                charactersLiveData.postValue(StateData.loading(null))
             }
 
+            try {
+                val loadCharacters = query?.let { repository.loadCharacters(it, offset, limit) } ?: repository.loadCharacters(offset, limit)
+                loadCharacters.data.results.forEach(Consumer {
+                    it.isFavorite = repository.isFavorite(it.id)
+                })
+
+                if(offset == 0){
+                    characters.clear()
+                }
+
+                characters.addAll(loadCharacters.data.results)
+                charactersLiveData.postValue(StateData.success(characters))
+                offset += limit
+
+                disableEndlessLiveData.postValue(loadCharacters.data.offset > loadCharacters.data.total)
+
+            } catch (ioException: Exception) {
+                disableEndlessLiveData.postValue(false)
+                ioException.message?.let {
+                    charactersLiveData.postValue(StateData.error(null, it))
+                } ?: run {
+                    charactersLiveData.postValue(StateData.error(null, ioException.toString()))
+                }
+            }
         }
     }
 
-    fun reloadCharacters(): LiveData<StateData<DataCharacterResponse>> {
+    fun reloadCharacters(){
         offset = 0
-        return loadCharacters()
+        disableEndlessLiveData.value = true
+        loadCharacters()
     }
 
     fun favorite(character: CharacterResponse, actualState: Boolean){
@@ -64,28 +76,17 @@ class AllViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    fun searchCharacter(query: String): LiveData<StateData<DataCharacterResponse>> = liveData(defaultDispatcher) {
+    fun searchCharacter(query: String){
         offset = 0
         this@AllViewModel.query = query
-        emit(StateData.loading(null))
-        try {
-            val loadCharacters = repository.loadCharacters(query, offset, limit)
-            loadCharacters.data.results.forEach(Consumer {
-                it.isFavorite = repository.isFavorite(it.id)
-            })
-            emit(StateData.success(loadCharacters.data))
-            offset += limit
-        } catch (ioException: Exception) {
-            ioException.message?.let {
-                emit(StateData.error(null, it))
-            } ?: run{
-                emit(StateData.error(null, ioException.toString()))
-            }
-
-        }
+        loadCharacters()
     }
 
     fun clearSearch() {
         query = null
+    }
+
+    fun itemSelected(character: CharacterResponse) {
+        itemSelectedLiveData.value = character
     }
 }

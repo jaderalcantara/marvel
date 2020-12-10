@@ -5,12 +5,14 @@ import android.graphics.Bitmap
 import android.util.Base64
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 
 class ImageHelper(val context: Context) {
 
     fun loadImage(url: String, view: ImageView){
         GlideApp.with(context)
             .load(url)
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(view)
     }
 

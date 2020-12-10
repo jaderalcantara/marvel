@@ -17,12 +17,13 @@ import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 import java.util.function.Consumer
 
-class CharacterDetailViewModel : ViewModel(), KoinComponent {
+class CharacterDetailViewModel(
+        private val repository: CharacterRepository,
+        private val defaultDispatcher: CoroutineDispatcher,
+        private val imageHelper: ImageHelper
+) : ViewModel(), KoinComponent {
 
     lateinit var character: CharacterResponse
-    private val repository: CharacterRepository by inject()
-    private val defaultDispatcher: CoroutineDispatcher by inject()
-    private val imageHelper: ImageHelper by inject()
 
     fun favorite(character: CharacterResponse){
         character.isFavorite = true

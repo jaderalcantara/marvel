@@ -16,10 +16,8 @@ import org.koin.core.component.inject
 import java.util.ArrayList
 
 class AllRecyclerViewAdapter(
-    private val context: Context,
     private val vm: AllViewModel,
-    private val values: ArrayList<CharacterResponse>,
-    private val listener: OnItemClicked
+    private var values: ArrayList<CharacterResponse>
 ) : RecyclerView.Adapter<AllRecyclerViewAdapter.ViewHolder>(), KoinComponent {
     private val imageHelper: ImageHelper by inject()
 
@@ -57,14 +55,14 @@ class AllRecyclerViewAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            listener.itemClicked(item)
+            vm.itemSelected(item)
         }
     }
 
     override fun getItemCount(): Int = values.size
 
-    fun add(items: List<CharacterResponse>) {
-        values.addAll(items)
+    fun setItems(items: List<CharacterResponse>) {
+        values = items as ArrayList<CharacterResponse>
         notifyDataSetChanged()
     }
 
@@ -84,9 +82,5 @@ class AllRecyclerViewAdapter(
         val image: ImageView = view.findViewById(R.id.image)
         val name: TextView = view.findViewById(R.id.name)
         val fav: ImageView = view.findViewById(R.id.fav)
-    }
-
-    interface OnItemClicked{
-        fun itemClicked(characterResponse: CharacterResponse)
     }
 }

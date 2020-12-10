@@ -16,22 +16,25 @@ import com.jaderalcantara.marvel.R
 import com.jaderalcantara.marvel.feature.data.CharacterResponse
 import com.jaderalcantara.marvel.feature.data.ComicResponse
 import com.jaderalcantara.marvel.infra.GlideApp
+import com.jaderalcantara.marvel.infra.ImageHelper
 import kotlinx.android.synthetic.main.activity_character_detail.*
 import kotlinx.android.synthetic.main.all_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 import java.util.*
 
 
-class CharacterDetailActivity : AppCompatActivity() {
-    private lateinit var viewModel: CharacterDetailViewModel
+class CharacterDetailActivity : AppCompatActivity(), KoinComponent {
+    private val viewModel: CharacterDetailViewModel by viewModel()
+    private val imageHelper: ImageHelper by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_character_detail)
 
-        viewModel = ViewModelProvider(this).get(CharacterDetailViewModel::class.java)
-
         if(intent.hasExtra(extraCharacter)) {
-            viewModel.character = intent.getSerializableExtra(extraCharacter) as CharacterResponse
+            viewModel.character = intent.getParcelableExtra(extraCharacter)
         }
 
         supportActionBar?.title = viewModel.character.name.toUpperCase()
@@ -41,9 +44,7 @@ class CharacterDetailActivity : AppCompatActivity() {
             description.text = it
         }
 
-        GlideApp.with(this)
-            .load(viewModel.character.thumbnail.path + "." + viewModel.character.thumbnail.extension)
-            .into(image)
+        imageHelper.loadImage(viewModel.character.thumbnail.path + "." + viewModel.character.thumbnail.extension, image)
 
         viewModel.character.comics?.items?.let {
             if (recyclerview is RecyclerView) {
