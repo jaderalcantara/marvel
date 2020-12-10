@@ -133,8 +133,6 @@ class AllFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        allViewModel.loadCharacters()
-
         swipeRefresh.setOnRefreshListener {
             allViewModel.reloadCharacters()
         }

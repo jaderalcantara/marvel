@@ -22,6 +22,10 @@ class FavoritesViewModel(
     private val characters = ArrayList<CharacterResponse>()
     val charactersLiveData = MutableLiveData<StateData<List<CharacterResponse>>>()
 
+    init {
+        loadCharacters()
+    }
+
     fun loadCharacters(query : String? = null){
         viewModelScope.launch(defaultDispatcher) {
             charactersLiveData.postValue(StateData.loading(null))

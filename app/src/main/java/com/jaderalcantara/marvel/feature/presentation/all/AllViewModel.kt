@@ -25,6 +25,10 @@ class AllViewModel(
     val itemSelectedLiveData = LiveEvent<CharacterResponse>()
     val charactersLiveData = MutableLiveData<StateData<List<CharacterResponse>>>()
 
+    init {
+        loadCharacters()
+    }
+
     fun loadCharacters() {
         viewModelScope.launch(defaultDispatcher) {
             if(offset == 0) {

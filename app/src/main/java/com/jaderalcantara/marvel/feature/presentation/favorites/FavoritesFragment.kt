@@ -112,8 +112,6 @@ class FavoritesFragment : Fragment() {
             }
         })
 
-        viewModel.loadCharacters()
-
         swipeRefresh.setOnRefreshListener {
             viewModel.loadCharacters()
         }
