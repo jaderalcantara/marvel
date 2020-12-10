@@ -2,9 +2,12 @@ package com.jaderalcantara.marvel.feature.presentation.all
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.Menu
+import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
@@ -14,9 +17,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jaderalcantara.marvel.R
 import com.jaderalcantara.marvel.feature.data.CharacterResponse
-import com.jaderalcantara.marvel.feature.data.DataCharacterResponse
 import com.jaderalcantara.marvel.feature.presentation.characterDetail.CharacterDetailActivity
-import com.jaderalcantara.marvel.infra.request.StateData
 import com.jaderalcantara.marvel.infra.request.Status
 import kotlinx.android.synthetic.main.all_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,12 +41,43 @@ class AllFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        return inflater.inflate(R.layout.all_fragment, container, false)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        super.onPrepareOptionsMenu(menu)
+        (menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
+            this.setOnCloseListener {
+                allViewModel.clearSearch()
+                allViewModel.reloadCharacters()
+                false
+            }
+
+            this.setOnQueryTextListener(object : OnQueryTextListener {
+
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    query?.let {
+                        allViewModel.searchCharacter(it)
+                    }
+
+                    return false
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    return false
+                }
+            })
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
         allViewModel.itemSelectedLiveData.observe(viewLifecycleOwner, Observer { character ->
             context?.let { context ->
                 startActivityForResult(
-                        CharacterDetailActivity.intent(context, character),
-                        CHARACTER_DETAIL_REQUEST_CODE
+                    CharacterDetailActivity.intent(context, character),
+                    CHARACTER_DETAIL_REQUEST_CODE
                 )
             }
 
@@ -101,37 +133,9 @@ class AllFragment : Fragment() {
             }
         })
 
-        return inflater.inflate(R.layout.all_fragment, container, false)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        super.onPrepareOptionsMenu(menu)
-        (menu.findItem(R.id.app_bar_search).actionView as SearchView).apply {
-            this.setOnCloseListener {
-                allViewModel.clearSearch()
-                allViewModel.reloadCharacters()
-                false
-            }
-
-            this.setOnQueryTextListener(object : OnQueryTextListener {
-
-                override fun onQueryTextSubmit(query: String?): Boolean {
-                    query?.let {
-                        allViewModel.searchCharacter(it)
-                    }
-
-                    return false
-                }
-
-                override fun onQueryTextChange(newText: String?): Boolean {
-                    return false
-                }
-            })
+        if( allViewModel.charactersLiveData.value == null) {
+            allViewModel.loadCharacters()
         }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
 
         swipeRefresh.setOnRefreshListener {
             allViewModel.reloadCharacters()
@@ -150,7 +154,7 @@ class AllFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if(CHARACTER_DETAIL_REQUEST_CODE == requestCode){
             val allRecyclerViewAdapter = list.adapter as AllRecyclerViewAdapter
-            allRecyclerViewAdapter.newState(data?.getSerializableExtra(CharacterDetailActivity.CHARACTER_DATA_RESULT) as CharacterResponse?)
+            allRecyclerViewAdapter.newState(data?.getParcelableExtra(CharacterDetailActivity.CHARACTER_DATA_RESULT) as CharacterResponse?)
         }
     }
 

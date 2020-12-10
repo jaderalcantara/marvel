@@ -1,19 +1,18 @@
 package com.jaderalcantara.marvel.feature.presentation.all
 
 import androidx.lifecycle.*
-import com.jaderalcantara.marvel.feature.data.CharacterRepository
 import com.jaderalcantara.marvel.feature.data.CharacterResponse
-import com.jaderalcantara.marvel.infra.ImageHelper
+import com.jaderalcantara.marvel.feature.domain.CharactersHandler
+import com.jaderalcantara.marvel.feature.domain.FavoritesHandler
 import com.jaderalcantara.marvel.infra.LiveEvent
 import com.jaderalcantara.marvel.infra.request.StateData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.launch
-import java.util.function.Consumer
 
 class AllViewModel(
-        private val repository: CharacterRepository,
-        private val defaultDispatcher: CoroutineDispatcher,
-        private val imageHelper: ImageHelper
+    private val charactersHandler: CharactersHandler,
+    private val favoritesHandler: FavoritesHandler,
+    private val defaultDispatcher: CoroutineDispatcher
 ) : ViewModel() {
 
     private var query : String? = null
@@ -25,10 +24,6 @@ class AllViewModel(
     val itemSelectedLiveData = LiveEvent<CharacterResponse>()
     val charactersLiveData = MutableLiveData<StateData<List<CharacterResponse>>>()
 
-    init {
-        loadCharacters()
-    }
-
     fun loadCharacters() {
         viewModelScope.launch(defaultDispatcher) {
             if(offset == 0) {
@@ -36,10 +31,7 @@ class AllViewModel(
             }
 
             try {
-                val loadCharacters = query?.let { repository.loadCharacters(it, offset, limit) } ?: repository.loadCharacters(offset, limit)
-                loadCharacters.data.results.forEach(Consumer {
-                    it.isFavorite = repository.isFavorite(it.id)
-                })
+                val loadCharacters = query?.let { charactersHandler.loadCharacters(offset, limit, it) } ?: charactersHandler.loadCharacters(offset, limit)
 
                 if(offset == 0){
                     characters.clear()
@@ -71,11 +63,9 @@ class AllViewModel(
     fun favorite(character: CharacterResponse, actualState: Boolean){
         viewModelScope.launch(defaultDispatcher) {
             if(actualState){
-                repository.removeFavorite(character)
+                favoritesHandler.removeFavorite(character)
             }else{
-                val imageBytes: ByteArray = imageHelper.downloadImage(character.thumbnail.path + "." + character.thumbnail.extension)
-
-                repository.addFavorite(character, imageBytes);
+                favoritesHandler.addFavorite(character);
             }
         }
     }
@@ -87,6 +77,7 @@ class AllViewModel(
     }
 
     fun clearSearch() {
+        offset = 0
         query = null
     }
 

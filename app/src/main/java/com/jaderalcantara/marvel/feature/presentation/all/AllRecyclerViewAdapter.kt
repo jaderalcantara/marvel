@@ -1,6 +1,5 @@
 package com.jaderalcantara.marvel.feature.presentation.all
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jaderalcantara.marvel.R
 import com.jaderalcantara.marvel.feature.data.CharacterResponse
-import com.jaderalcantara.marvel.infra.GlideApp
 import com.jaderalcantara.marvel.infra.ImageHelper
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
-import java.util.ArrayList
+import java.util.*
 
 class AllRecyclerViewAdapter(
     private val vm: AllViewModel,

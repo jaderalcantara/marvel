@@ -1,8 +1,6 @@
 package com.jaderalcantara.marvel.feature.presentation.favorites
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -11,19 +9,15 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.jaderalcantara.marvel.R
 import com.jaderalcantara.marvel.feature.data.CharacterResponse
-import com.jaderalcantara.marvel.feature.data.DataCharacterResponse
-import com.jaderalcantara.marvel.feature.presentation.all.AllRecyclerViewAdapter
-import com.jaderalcantara.marvel.feature.presentation.all.AllViewModel
-import com.jaderalcantara.marvel.infra.request.StateData
 import com.jaderalcantara.marvel.infra.request.Status
 import kotlinx.android.synthetic.main.all_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.ArrayList
+import java.util.*
 
 class FavoritesFragment : Fragment() {
 
@@ -119,6 +113,8 @@ class FavoritesFragment : Fragment() {
         emptySwipeRefresh.setOnRefreshListener {
             viewModel.loadCharacters()
         }
+
+        viewModel.loadCharacters()
     }
 
     private fun showEmpty() {

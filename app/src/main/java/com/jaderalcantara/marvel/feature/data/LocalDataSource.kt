@@ -7,47 +7,27 @@ import org.koin.core.component.inject
 import java.nio.charset.StandardCharsets
 import java.util.*
 
-class LocalDataSource: KoinComponent {
-    private val database: AppDatabase by inject()
+class LocalDataSource(private val database: AppDatabase) {
 
-    fun isFavorite(id: Int): Boolean {
+    suspend fun isFavorite(id: Int): Boolean {
         val loadById = database.userDao().loadById(id)
         return loadById != null
     }
 
-    fun removeFavorite(character: CharacterResponse) {
+    suspend fun removeFavorite(character: CharacterResponse) {
         database.userDao().delete(CharacterEntity(character.id, "", ""))
     }
 
-    fun addFavorite(character: CharacterResponse, imageBytes: ByteArray) {
-        val string = String(Base64.getEncoder().encode(imageBytes), StandardCharsets.UTF_8)
-        database.userDao().insert(CharacterEntity(character.id, character.name, string))
+    suspend fun addFavorite(character: CharacterEntity) {
+        database.userDao().insert(character)
     }
 
-    fun getCharacters(): CharactersResponse {
-        val map = database.userDao().getAll().map { characterEntity ->
-            CharacterResponse(
-                characterEntity.id,
-                characterEntity.name,
-                CharacterThumbnailResponse("", "", characterEntity.image)
-            )
-        }
-        return CharactersResponse(
-            DataCharacterResponse(0,0,0,0, map)
-        )
+    suspend fun getCharacters(): List<CharacterEntity> {
+        return database.userDao().getAll()
     }
 
-    fun searchCharacter(query: String): CharactersResponse {
-        val map = database.userDao().findByName("$query%").map { characterEntity ->
-            CharacterResponse(
-                characterEntity.id,
-                characterEntity.name,
-                CharacterThumbnailResponse("", "", characterEntity.image)
-            )
-        }
-        return CharactersResponse(
-            DataCharacterResponse(0,0,0,0, map)
-        )
+    suspend fun searchCharacter(query: String): List<CharacterEntity> {
+        return database.userDao().findByName("$query%")
     }
 
 }

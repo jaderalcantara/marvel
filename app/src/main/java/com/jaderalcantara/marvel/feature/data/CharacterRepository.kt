@@ -1,15 +1,13 @@
 package com.jaderalcantara.marvel.feature.data
 
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import com.jaderalcantara.marvel.feature.data.db.CharacterEntity
 
-class CharacterRepository: KoinComponent {
-
-    private val api : CharacterApiService by inject()
-    private val local : LocalDataSource by inject()
+class CharacterRepository(
+    private val api : CharacterRemoteDataSource,
+    private val local : LocalDataSource
+) {
 
     suspend fun loadCharacters(offset: Int, limit: Int): CharactersResponse {
-
         return api.getCharacters(offset, limit, "name")
     }
 
@@ -17,23 +15,23 @@ class CharacterRepository: KoinComponent {
         return api.getCharacters(query, offset, limit, "name")
     }
 
-    fun removeFavorite(character: CharacterResponse) {
+    suspend fun removeFavorite(character: CharacterResponse) {
         local.removeFavorite(character)
     }
 
-    fun addFavorite(character: CharacterResponse, imageBytes: ByteArray) {
-        local.addFavorite(character, imageBytes)
+    suspend fun addFavorite(character: CharacterEntity) {
+        local.addFavorite(character)
     }
 
-    fun isFavorite(id: Int): Boolean {
+    suspend fun isFavorite(id: Int): Boolean {
         return local.isFavorite(id)
     }
 
-    fun loadFavorites(): CharactersResponse {
+    suspend fun loadFavorites(): List<CharacterEntity> {
         return local.getCharacters()
     }
 
-    fun loadFavorites(query: String): CharactersResponse {
+    suspend fun loadFavorites(query: String): List<CharacterEntity> {
         return local.searchCharacter(query)
     }
 }

@@ -6,6 +6,7 @@ import android.util.Base64
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import java.nio.charset.StandardCharsets
 
 class ImageHelper(val context: Context) {
 
@@ -27,5 +28,9 @@ class ImageHelper(val context: Context) {
             .load(url)
             .submit()
             .get()
+    }
+
+    fun bytesToBase64(imageBytes: ByteArray): String {
+        return String(java.util.Base64.getEncoder().encode(imageBytes), StandardCharsets.UTF_8)
     }
 }

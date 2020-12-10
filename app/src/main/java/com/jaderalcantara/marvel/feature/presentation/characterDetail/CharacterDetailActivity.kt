@@ -9,13 +9,11 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jaderalcantara.marvel.R
 import com.jaderalcantara.marvel.feature.data.CharacterResponse
 import com.jaderalcantara.marvel.feature.data.ComicResponse
-import com.jaderalcantara.marvel.infra.GlideApp
 import com.jaderalcantara.marvel.infra.ImageHelper
 import kotlinx.android.synthetic.main.activity_character_detail.*
 import kotlinx.android.synthetic.main.all_fragment.*
