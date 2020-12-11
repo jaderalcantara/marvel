@@ -29,11 +29,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId){
             R.id.all -> {
-                supportFragmentManager.beginTransaction().replace(R.id.container, AllFragment.newInstance()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.container, AllFragment.newInstance(), "tag").commit()
                 true
             }
             R.id.favorites -> {
-                supportFragmentManager.beginTransaction().replace(R.id.container, FavoritesFragment.newInstance()).commit()
+                supportFragmentManager.beginTransaction().replace(R.id.container, FavoritesFragment.newInstance(), "tag").commit()
                 true
             }
             else -> {
