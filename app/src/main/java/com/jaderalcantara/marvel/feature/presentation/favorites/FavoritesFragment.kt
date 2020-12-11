@@ -114,7 +114,9 @@ class FavoritesFragment : Fragment() {
             viewModel.loadCharacters()
         }
 
-        viewModel.loadCharacters()
+        if(viewModel.charactersLiveData.value == null) {
+            viewModel.loadCharacters()
+        }
     }
 
     private fun showEmpty() {
