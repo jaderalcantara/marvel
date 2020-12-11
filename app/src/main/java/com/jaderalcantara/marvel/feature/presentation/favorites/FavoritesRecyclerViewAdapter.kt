@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jaderalcantara.marvel.R
-import com.jaderalcantara.marvel.feature.data.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
 import com.jaderalcantara.marvel.infra.ImageHelper
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject

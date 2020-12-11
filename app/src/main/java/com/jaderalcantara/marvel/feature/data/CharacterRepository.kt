@@ -1,5 +1,7 @@
 package com.jaderalcantara.marvel.feature.data
 
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharactersResponse
 import com.jaderalcantara.marvel.feature.data.db.CharacterEntity
 
 class CharacterRepository(

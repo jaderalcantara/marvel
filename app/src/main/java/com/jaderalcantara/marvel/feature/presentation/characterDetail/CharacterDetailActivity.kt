@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jaderalcantara.marvel.R
-import com.jaderalcantara.marvel.feature.data.CharacterResponse
-import com.jaderalcantara.marvel.feature.data.ComicResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.ComicResponse
 import com.jaderalcantara.marvel.infra.ImageHelper
 import kotlinx.android.synthetic.main.activity_character_detail.*
 import kotlinx.android.synthetic.main.all_fragment.*

@@ -1,11 +1,8 @@
 package com.jaderalcantara.marvel.feature.data
 
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
 import com.jaderalcantara.marvel.feature.data.db.CharacterEntity
 import com.jaderalcantara.marvel.infra.database.AppDatabase
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
-import java.nio.charset.StandardCharsets
-import java.util.*
 
 class LocalDataSource(private val database: AppDatabase) {
 

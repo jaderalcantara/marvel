@@ -1,5 +1,6 @@
 package com.jaderalcantara.marvel.feature.data
 
+import com.jaderalcantara.marvel.feature.data.api.CharactersResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 

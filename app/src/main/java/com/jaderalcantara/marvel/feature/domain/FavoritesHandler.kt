@@ -1,6 +1,10 @@
 package com.jaderalcantara.marvel.feature.domain
 
-import com.jaderalcantara.marvel.feature.data.*
+import com.jaderalcantara.marvel.feature.data.CharacterRepository
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterThumbnailResponse
+import com.jaderalcantara.marvel.feature.data.api.CharactersResponse
+import com.jaderalcantara.marvel.feature.data.api.DataCharacterResponse
 import com.jaderalcantara.marvel.feature.data.db.CharacterEntity
 import com.jaderalcantara.marvel.infra.ImageHelper
 

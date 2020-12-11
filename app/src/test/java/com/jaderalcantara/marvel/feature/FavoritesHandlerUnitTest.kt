@@ -3,8 +3,9 @@ package com.jaderalcantara.marvel.feature
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.jaderalcantara.marvel.CoroutineTestRule
 import com.jaderalcantara.marvel.feature.data.*
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterThumbnailResponse
 import com.jaderalcantara.marvel.feature.data.db.CharacterEntity
-import com.jaderalcantara.marvel.feature.domain.CharactersHandler
 import com.jaderalcantara.marvel.feature.domain.FavoritesHandler
 import com.jaderalcantara.marvel.infra.ImageHelper
 import com.nhaarman.mockitokotlin2.given
@@ -13,8 +14,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.koin.test.KoinTest
-import org.mockito.BDDMockito.*
 import org.mockito.Mockito
 
 @ExperimentalCoroutinesApi

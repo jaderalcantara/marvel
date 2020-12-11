@@ -16,7 +16,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.jaderalcantara.marvel.R
-import com.jaderalcantara.marvel.feature.data.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
 import com.jaderalcantara.marvel.feature.presentation.characterDetail.CharacterDetailActivity
 import com.jaderalcantara.marvel.infra.request.Status
 import kotlinx.android.synthetic.main.all_fragment.*
@@ -126,9 +126,8 @@ class AllFragment : Fragment() {
         })
 
         allViewModel.disableEndlessLiveData.observe(viewLifecycleOwner, Observer {disableEndless ->
-            if(disableEndless){
-                list.removeOnScrollListener(listener)
-            }else{
+            list.clearOnScrollListeners()
+            if(!disableEndless){
                 list.addOnScrollListener(listener)
             }
         })

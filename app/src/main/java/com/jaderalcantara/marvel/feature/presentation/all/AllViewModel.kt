@@ -1,7 +1,7 @@
 package com.jaderalcantara.marvel.feature.presentation.all
 
 import androidx.lifecycle.*
-import com.jaderalcantara.marvel.feature.data.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
 import com.jaderalcantara.marvel.feature.domain.CharactersHandler
 import com.jaderalcantara.marvel.feature.domain.FavoritesHandler
 import com.jaderalcantara.marvel.infra.LiveEvent

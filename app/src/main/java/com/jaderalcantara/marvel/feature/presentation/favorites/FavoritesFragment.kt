@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.GridLayoutManager
 import com.jaderalcantara.marvel.R
-import com.jaderalcantara.marvel.feature.data.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
 import com.jaderalcantara.marvel.infra.request.Status
 import kotlinx.android.synthetic.main.all_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel

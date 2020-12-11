@@ -3,7 +3,7 @@ package com.jaderalcantara.marvel.feature.presentation.favorites
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jaderalcantara.marvel.feature.data.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
 import com.jaderalcantara.marvel.feature.domain.FavoritesHandler
 import com.jaderalcantara.marvel.infra.request.StateData
 import kotlinx.coroutines.CoroutineDispatcher

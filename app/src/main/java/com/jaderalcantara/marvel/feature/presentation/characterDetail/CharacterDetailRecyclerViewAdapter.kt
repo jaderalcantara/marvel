@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jaderalcantara.marvel.R
-import com.jaderalcantara.marvel.feature.data.ComicResponse
+import com.jaderalcantara.marvel.feature.data.api.ComicResponse
 import java.util.*
 
 class CharacterDetailRecyclerViewAdapter(

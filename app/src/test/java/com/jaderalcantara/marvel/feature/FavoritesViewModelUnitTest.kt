@@ -3,9 +3,9 @@ package com.jaderalcantara.marvel.feature
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.jaderalcantara.marvel.CoroutineTestRule
-import com.jaderalcantara.marvel.feature.data.CharacterResponse
-import com.jaderalcantara.marvel.feature.data.CharactersResponse
-import com.jaderalcantara.marvel.feature.data.DataCharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharacterResponse
+import com.jaderalcantara.marvel.feature.data.api.CharactersResponse
+import com.jaderalcantara.marvel.feature.data.api.DataCharacterResponse
 import com.jaderalcantara.marvel.feature.domain.FavoritesHandler
 import com.jaderalcantara.marvel.feature.presentation.favorites.FavoritesViewModel
 import com.jaderalcantara.marvel.infra.request.StateData
@@ -15,7 +15,6 @@ import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.koin.test.KoinTest
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.BDDMockito
 import org.mockito.Mockito
